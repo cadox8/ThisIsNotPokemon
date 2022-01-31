@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using NPC;
 using UnityEngine;
 
 namespace Player {
@@ -9,6 +8,8 @@ namespace Player {
         public float velocity;
 
         [Header("Capa de sólidos")] public LayerMask propsLayer;
+        [Header("Capa de Grass")] public LayerMask grassLayer;
+        [Header("Capa de Interactuables")] public LayerMask interactableLayer;
 
         // --- Internal ---
 
@@ -36,7 +37,8 @@ namespace Player {
             if (Input.GetKey(KeyCode.S) && this._direction == PlayerDirection.None) this._direction = PlayerDirection.Down;
             if (Input.GetKey(KeyCode.D) && this._direction == PlayerDirection.None) this._direction = PlayerDirection.Right;
 
-            if (Input.GetKeyUp(KeyCode.LeftShift)) this._isSprinting = !this._isSprinting;
+            if (Input.GetKey(KeyCode.LeftShift) && !this._isSprinting) this._isSprinting = true;
+            if (Input.GetKeyUp(KeyCode.LeftShift) && this._isSprinting) this._isSprinting = false;
             
             this.MovePlayer();
         }
@@ -79,13 +81,42 @@ namespace Player {
             {
                 this._animator.SetBool("isMoving", false);
             }
+            
+            if (Input.GetKeyDown(KeyCode.Space)) Interact();
         }
+        
+        // --- Interact ---
+        public void Interact()
+        {
+            Vector3 facingDir = new Vector3(this._animator.GetFloat("moveX"), this._animator.GetFloat("moveY"));
+            Vector3 interactPos = transform.position + facingDir;
+            
+            Collider2D collider = Physics2D.OverlapCircle(interactPos, 0.3f, this.interactableLayer);
+
+            if (collider != null)
+            {
+                collider.GetComponent<Interactable>()?.Interact();
+            }
+        }
+        
         
         // --- Collision ---
         private bool IsWalkable(Vector3 targetPos)
         {
-            return Physics2D.OverlapCircle(targetPos - new Vector3(0, -0.5f, 0), 0.2f, this.propsLayer) == null;
+            return Physics2D.OverlapCircle(targetPos - new Vector3(0, -0.5f, 0), 0.2f, this.propsLayer | this.interactableLayer) == null;
         }
+
+        private void CheckForPokemon()
+        {
+            if (Physics2D.OverlapCircle(transform.position, 0.2f, this.grassLayer) == null)
+            {
+                if (Random.Range(1, 101) <= 10)
+                {
+                    Debug.Log("Pokemon!");
+                }
+            }
+        }
+        
 
         private void OnTriggerEnter(Collider col)
         {

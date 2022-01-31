@@ -15,8 +15,8 @@ TagManager:
   - 
   - 
   - Props
-  - 
-  - 
+  - Grass
+  - Interactable
   - 
   - 
   - 
@@ -48,11 +48,11 @@ TagManager:
   - name: Paths
     uniqueID: 1505320059
     locked: 0
-  - name: Buildings
-    uniqueID: 1954686785
-    locked: 0
   - name: Props
     uniqueID: 3546251567
+    locked: 0
+  - name: Details
+    uniqueID: 1954686785
     locked: 0
   - name: Player
     uniqueID: 2086463047

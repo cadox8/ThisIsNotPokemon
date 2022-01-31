@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NPC {
-    public class NPC : MonoBehaviour {
+    public class NPC : MonoBehaviour, Interactable {
 
         [Header("Inteligencia artificial")]
         public bool hasAI = true;
@@ -24,6 +24,11 @@ namespace NPC {
             // --- Dialog ---
             
             if (!this.hasAI) return;
+        }
+
+        public void Interact()
+        {
+            Debug.Log("Interact!");
         }
     }
 }
