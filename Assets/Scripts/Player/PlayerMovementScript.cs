@@ -1,82 +1,98 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using Player;
 using UnityEngine;
 
-public class PlayerMovementScript : MonoBehaviour {
+namespace Player {
+    public class PlayerMovementScript : MonoBehaviour {
 
-    private float _velocity = 1f;
-    
-    private List<KeyCode> _keys;
+        [Header("Velocidad")]
+        public float velocity;
 
-    private PlayerDirection _direction;
-    
-    private bool _isSprinting;
+        [Header("Capa de sólidos")] public LayerMask propsLayer;
 
-    void Start()
-    {
-        this._keys = new List<KeyCode>();
+        // --- Internal ---
+
+        private PlayerDirection _direction;
         
-        this._keys.Add(KeyCode.W);
-        this._keys.Add(KeyCode.A);
-        this._keys.Add(KeyCode.S);
-        this._keys.Add(KeyCode.D);
+        private bool _isSprinting;
+
+        private Animator _animator;
+
+        private bool _canWalk = true;
         
-        this._keys.Add(KeyCode.LeftShift);
-        this._keys.Add(KeyCode.Space);
-
-        this._direction = PlayerDirection.None;
-    }
-
-    void Update()
-    {
-        foreach (var key in _keys)
+        void Start()
         {
-            if (Input.GetKey(key))
+            this._animator = GetComponent<Animator>();
+
+            this._direction = PlayerDirection.None;
+            this._isSprinting = false;
+        }
+
+        void Update()
+        {
+            this._direction = PlayerDirection.None;
+            if (Input.GetKey(KeyCode.W) && this._direction == PlayerDirection.None) this._direction = PlayerDirection.Up;
+            if (Input.GetKey(KeyCode.A) && this._direction == PlayerDirection.None) this._direction = PlayerDirection.Left;
+            if (Input.GetKey(KeyCode.S) && this._direction == PlayerDirection.None) this._direction = PlayerDirection.Down;
+            if (Input.GetKey(KeyCode.D) && this._direction == PlayerDirection.None) this._direction = PlayerDirection.Right;
+
+            if (Input.GetKeyUp(KeyCode.LeftShift)) this._isSprinting = !this._isSprinting;
+            
+            this.MovePlayer();
+        }
+
+        private void MovePlayer()
+        {
+            Vector3 direction;
+
+            switch (this._direction)
             {
-                switch (key)
-                {
-                    case KeyCode.W:
-                        this._direction = PlayerDirection.Up;
-                        break;
-                    case KeyCode.A:
-                        this._direction = PlayerDirection.Left;
-                        break;
-                    case KeyCode.S:
-                        this._direction = PlayerDirection.Down;
-                        break;
-                    case KeyCode.D:
-                        this._direction = PlayerDirection.Right;
-                        break;
-                }
-                this.MovePlayer();
+                case PlayerDirection.Up:
+                    direction = Vector3.up;
+                    break;
+                case PlayerDirection.Left:
+                    direction = Vector3.left;
+                    break;
+                case PlayerDirection.Down:
+                    direction = Vector3.down;
+                    break;
+                case PlayerDirection.Right:
+                    direction = Vector3.right;
+                    break;
+                default:
+                    direction = Vector3.zero;
+                    break;
+            }
+
+            Vector3 movement = direction * (this._isSprinting ? this.velocity * 2f : this.velocity) * Time.deltaTime;
+
+            if (this.IsWalkable(movement + transform.position) && this._canWalk) transform.Translate(movement);
+
+            if (this._direction != PlayerDirection.None)
+            {
+                this._animator.SetBool("isSprinting", this._isSprinting);
+                this._animator.SetFloat("moveX", direction.x);
+                this._animator.SetFloat("moveY", direction.y);
+                this._animator.SetBool("isMoving", true);
+            }
+            else
+            {
+                this._animator.SetBool("isMoving", false);
             }
         }
-    }
-
-    private void MovePlayer()
-    {
-        Vector3 direction;
-
-        switch (this._direction)
-        {
-            case PlayerDirection.Up:
-                direction = Vector3.up;
-                break;
-            case PlayerDirection.Left:
-                direction = Vector3.left;
-                break;
-            case PlayerDirection.Down:
-                direction = Vector3.down;
-                break;
-            case PlayerDirection.Right:
-                direction = Vector3.right;
-                break;
-            default:
-                direction = Vector3.zero;
-                break;
-        }
         
-        transform.Translate(direction * this._velocity * Time.deltaTime);
+        // --- Collision ---
+        private bool IsWalkable(Vector3 targetPos)
+        {
+            return Physics2D.OverlapCircle(targetPos - new Vector3(0, -0.5f, 0), 0.2f, this.propsLayer) == null;
+        }
+
+        private void OnTriggerEnter(Collider col)
+        {
+            if (col.gameObject.CompareTag("NPC"))
+            {
+                Debug.Log("hit!");
+            }
+        }
     }
 }
