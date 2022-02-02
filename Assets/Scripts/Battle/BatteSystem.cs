@@ -24,7 +24,7 @@ namespace Battle {
             this.PlayerHud.SetData(this.PlayerUnit.Pokemon);
             this.EnemyHud.SetData(this.EnemyUnit.Pokemon);
             
-            this.DialogBox.SetDialog($"Un {this.PlayerUnit.Pokemon.Base.name} ha aparecido");
+            StartCoroutine(this.DialogBox.TypeDialog($"Un {this.EnemyUnit.Pokemon.Base.name} ha aparecido"));
         }
      }
 }
