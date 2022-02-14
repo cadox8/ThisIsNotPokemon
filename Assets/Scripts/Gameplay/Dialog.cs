@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Gameplay {
     
-    [System.Serializable]
+    [Serializable]
     public class Dialog : MonoBehaviour {
-
-        [SerializeField] public List<string> lines;
-        
+        [SerializeField] private List<string> lines;
+        public List<string> Lines => lines;
     }
 }

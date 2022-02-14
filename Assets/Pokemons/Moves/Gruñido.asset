@@ -15,7 +15,12 @@ MonoBehaviour:
   name: "Gru\xF1ido"
   description: 
   type: 0
-  category: 1
+  category: 2
+  effects:
+    boosts:
+    - stat: 0
+      boost: -1
+  target: 0
   power: 0
   accuracy: 100
   pp: 40

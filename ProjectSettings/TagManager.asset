@@ -17,7 +17,7 @@ TagManager:
   - Props
   - Grass
   - Interactable
-  - 
+  - Portal
   - 
   - 
   - 
@@ -56,4 +56,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2086463047
+    locked: 0
+  - name: Battle
+    uniqueID: 414630367
     locked: 0

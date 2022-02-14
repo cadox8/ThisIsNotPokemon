@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e18a1f428b4a919b12f4dcab093be3, type: 3}
   m_Name: "Ara\xF1azo"
   m_EditorClassIdentifier: 
-  name: 
+  name: "Ara\xF1azo"
   description: 
   type: 0
   category: 0

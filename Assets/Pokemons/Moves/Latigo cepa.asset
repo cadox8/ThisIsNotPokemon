@@ -15,7 +15,10 @@ MonoBehaviour:
   name: "L\xE1tigo cepa "
   description: 
   type: 4
-  category: 0
+  category: 1
+  effects:
+    boosts: []
+  target: 0
   power: 45
   accuracy: 100
   pp: 25

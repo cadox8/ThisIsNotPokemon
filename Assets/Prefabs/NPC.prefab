@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6841399893865783821}
   - component: {fileID: 7573798920165156902}
   - component: {fileID: 2912991799589506648}
-  - component: {fileID: 8849226219991173968}
+  - component: {fileID: 1862772521690422254}
   - component: {fileID: 6321087990727648417}
   - component: {fileID: 8340756930976245227}
   m_Layer: 10
@@ -105,7 +105,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8849226219991173968
+--- !u!114 &1862772521690422254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,9 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9a2d117966a704a9db0c15f309d454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasAI: 0
-  velocity: 0
-  dialog: []
+  dialog: {fileID: 0}
 --- !u!50 &6321087990727648417
 Rigidbody2D:
   serializedVersion: 4

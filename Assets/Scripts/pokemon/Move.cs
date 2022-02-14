@@ -7,7 +7,7 @@
         public Move(MoveBase @base)
         {
             this.Base = @base;
-            this.PP = this.Base.Pp;
+            this.PP = this.Base.PP;
         }
     }
 }

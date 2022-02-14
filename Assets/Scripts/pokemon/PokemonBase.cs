@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using pokemon;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -68,6 +69,30 @@ namespace pokemon {
     
     
     public enum PokemonType {
-        Normal, Fire, Water, Electric, Grass, Ice, Fighting, Poison, Ground, Flying, Psychic, Bug, Rock, Ghost, Dragon, None
+        Normal, Fuego, Agua, Eléctrico, Planta, Hielo, Lucha, Veneno, Tierra, Volador, Psíquico, Bicho, Roca, Fantasma, Dragón, Nada
+    }
+
+    public enum Stat {
+        Ataque, Defensa, Ataque_Especial, Defensa_Especial, Velocidad, Precision, Evasion
+    }
+}
+
+public class TypeChart {
+
+    // Orden = PokemonType
+    public static float[][] chart =
+    {
+        new float[] {1f,    1f,     1f,     1,      1,      1,      1,      1},
+        new float[] {1f,    .5f,    .5f,    1,      2,      2,      1,      1},
+        new float[] {1f,    2f,     .5f,    2,      .5f,    1,      1,      1},
+        new float[] {1f,    1f,     2,      .5f,    .5f,    2,      1,      1},
+        new float[] {1f,    .5f,    2,      2,      .5f,    1,      1,      .5f},
+        new float[] {1f,    1,      1,      1,      1,      1,      1,      1}
+    };
+
+    public static float GetEffectiveness(PokemonType attackType, PokemonType defenseType)
+    {
+        if (attackType == PokemonType.Nada || defenseType == PokemonType.Nada) return 1;
+        return chart[(int) attackType][(int) defenseType];
     }
 }
